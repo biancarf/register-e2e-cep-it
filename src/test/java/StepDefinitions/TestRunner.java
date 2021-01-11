@@ -9,7 +9,9 @@ import io.cucumber.junit.CucumberOptions;
 @CucumberOptions(features = "src/test/resources/Features",
 glue = {"StepDefinitions"}, 
 monochrome = true,
-plugin = {"pretty", "html:target/test-report"})
+//plugin = {"pretty", "html:target/test-report"})
+plugin = {"pretty", "junit:target/test-report.html"})
+//plugin = { "com.cucumber.ExtentCucumberFormatter:target/repost.html" })
 public class TestRunner {
 
 }

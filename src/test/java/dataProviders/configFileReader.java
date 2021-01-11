@@ -41,14 +41,16 @@ public class configFileReader {
 		}	
 	}
 	
-	public String getApplicationUrl() {
-		String url = properties.getProperty("url");
-		if (url != null) {
-			return url;
+	public String getApplicationUrl(String url) {
+		if (url.equals("urle2e") && url != null) {
+			return url = properties.getProperty("urle2e");
+		} else if (url.equals("urlApi") && url != null) {
+			return url = properties.getProperty("urlApi");
 		} else {
 			throw new RuntimeException("Url não encontrada no arquivo Configuration.properties.");
 		}
 		
 	}
+	
 	
 }
