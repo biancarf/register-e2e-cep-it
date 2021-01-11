@@ -20,30 +20,29 @@ public class Cadastrar {
 	WebDriver driver = null;
 	CadastroPage cadastroPage;
 	configFileReader configFileReader;
+	Integer parametroLigaE2e = 0;
 	
 	
 	@Before
 	public void iniciar() {
 		configFileReader = new configFileReader();
-		url = configFileReader.getApplicationUrl(); 
-		System.setProperty("webdriver.chrome.driver", configFileReader.getDriverPath());	
-		driver = new ChromeDriver();
-		driver.manage().window().maximize();
-		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		url = configFileReader.getApplicationUrl("urle2e"); 
+		System.setProperty("webdriver.chrome.driver", configFileReader.getDriverPath());
 		
 		
 	}
 
 	@After
-	private void finalizar() {
-		driver.quit();
-		driver.close();
+	public void finalizar() {
+		if (driver != null) {
+			driver.quit();	
+		}
 
 	}
 	
 	@Given("que o usuario não esteja cadastrado no sistema")
 	public void que_o_usuario_não_esteja_cadastrado_no_sistema() {
-	    // Write code here that turns the phrase above into concrete actions
+		ligaChrome();
 		driver.get(url);
 	}
 
@@ -113,6 +112,7 @@ public class Cadastrar {
 	
 	@Given("que o usuario possua cadastro e tente cadastra com o mesmo nome {string}")
 	public void que_o_usuario_possua_cadastro_e_tente_cadastra_com_o_mesmo_nome(String nome) {
+		ligaChrome();
 		driver.get(url);
 		cadastroPage = new CadastroPage(driver);
 		cadastroPage.digitaNome(nome);
@@ -128,5 +128,12 @@ public class Cadastrar {
 	public void mensagem(String msgTelefoneExitente) {
 		cadastroPage.msgErroFoneExistente(msgTelefoneExitente);
 
-	}	
+	}
+	
+	public void ligaChrome() {
+		driver = new ChromeDriver();
+		driver.manage().window().maximize();
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+
+	}
 }
