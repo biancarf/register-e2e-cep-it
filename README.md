@@ -14,7 +14,7 @@ O projeto ***register-e2e-cep-it*** tem dois objetivos:
   * [eclipse IDE](https://www.eclipse.org/downloads/)
   * [Java 8](https://www.oracle.com/br/java/technologies/javase/javase-jdk8-downloads.html)
   * [Maven](https://mvnrepository.com/) 
-  
+  * O driver do navegador [google chrome](https://chromedriver.chromium.org/downloads) na pasta ***drivers/chrome***
 #### Build
 
 Na pasta do projeto digitar no terminal o comando:
