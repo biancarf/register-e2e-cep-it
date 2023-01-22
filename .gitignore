@@ -1,1 +1,7 @@
 /target/
+/target/*
+.project
+.settings/
+.settings/*
+.classpath
+drivers/chrome/chromedriver
