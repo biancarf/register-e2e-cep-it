@@ -1,8 +1,9 @@
-# Author: Daniel
+#Author: Daniel
 # Date
 # Description
 Feature: feature para testar funcionalidade para cadastro de usuário
 
+  # AVISO: O site usado está com  problema do campo obrigatório Country, impedindo o teste finalizar
   Scenario: Cadastrar usuário válido
     Given que o usuario não esteja cadastrado no sistema
     And que o usuário preenche os campos obrigatórios nome com o valor "Aline"
