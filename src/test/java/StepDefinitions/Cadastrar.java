@@ -1,13 +1,18 @@
 package StepDefinitions;
 
-
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 import dataProviders.configFileReader;
 import io.cucumber.java.After;
@@ -17,29 +22,36 @@ import pages.CadastroPage;
 
 public class Cadastrar {
 	String url;
-	WebDriver driver = null;
+	DesiredCapabilities capabilities = DesiredCapabilities.chrome();
+	WebDriver driver = new RemoteWebDriver(new URL("http://192.168.15.66:4444"), capabilities);
+	
 	CadastroPage cadastroPage;
 	configFileReader configFileReader;
 	Integer parametroLigaE2e = 0;
-	
-	
+
+	public Cadastrar() throws MalformedURLException {
+	}
+
 	@Before
 	public void iniciar() {
 		configFileReader = new configFileReader();
-		url = configFileReader.getApplicationUrl("urle2e"); 
+		
+		capabilities.setBrowserName("chrome");
+		capabilities.setVersion("114.0");
+		
+		url = configFileReader.getApplicationUrl("urle2e");
 		System.setProperty("webdriver.chrome.driver", configFileReader.getDriverPath());
-		
-		
+
 	}
 
 	@After
 	public void finalizar() {
 		if (driver != null) {
-			driver.quit();	
+			driver.quit();
 		}
 
 	}
-	
+
 	@Given("que o usuario não esteja cadastrado no sistema")
 	public void que_o_usuario_não_esteja_cadastrado_no_sistema() {
 		ligaChrome();
@@ -47,7 +59,7 @@ public class Cadastrar {
 	}
 
 	@And("que o usuário preenche os campos obrigatórios nome com o valor {string}")
-	public void que_o_usuário_preenche_os_campos_obrigatórios_nome_com_o_valor(String nome) {	
+	public void que_o_usuário_preenche_os_campos_obrigatórios_nome_com_o_valor(String nome) {
 		cadastroPage = new CadastroPage(driver);
 		cadastroPage.digitaNome(nome);
 
@@ -88,11 +100,11 @@ public class Cadastrar {
 		cadastroPage.selecionaDia(dia);
 		cadastroPage.selecionaMes(mes);
 		cadastroPage.selecionaAno(ano);
-		
+
 	}
 
 	@And("a senha com a confirmação {string}")
-	public void a_senha_com_a_confirmação(String senha) {	
+	public void a_senha_com_a_confirmação(String senha) {
 		cadastroPage.digitaSenha(senha);
 		cadastroPage.digitaConfirmacaoSenha(senha);
 	}
@@ -100,7 +112,7 @@ public class Cadastrar {
 	@When("clicar em {string}")
 	public void clicar_em(String submit) {
 		cadastroPage.clicaSubmit();
-		
+
 	}
 
 	@Then("o usuário é cadastrado com sucesso")
@@ -108,8 +120,8 @@ public class Cadastrar {
 		String textoEsperado = "- Double Click on Edit Icon to EDIT the Table Row.";
 		cadastroPage.confirmaCadastroSucesso(textoEsperado);
 
-	}	
-	
+	}
+
 	@Given("que o usuario possua cadastro e tente cadastra com o mesmo nome {string}")
 	public void que_o_usuario_possua_cadastro_e_tente_cadastra_com_o_mesmo_nome(String nome) {
 		ligaChrome();
@@ -121,7 +133,7 @@ public class Cadastrar {
 	@Then("Sistema apresenta mensagem de erro {string}")
 	public void sistema_apresenta_mensagem_de_erro(String msgEmailExitente) {
 		cadastroPage.msgErroEmailExistente(msgEmailExitente);
-	
+
 	}
 
 	@And("mensagem {string}")
@@ -129,9 +141,8 @@ public class Cadastrar {
 		cadastroPage.msgErroFoneExistente(msgTelefoneExitente);
 
 	}
-	
+
 	public void ligaChrome() {
-		driver = new ChromeDriver();
 		driver.manage().window().maximize();
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
